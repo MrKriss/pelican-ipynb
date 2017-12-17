@@ -78,7 +78,7 @@ LATEX_CUSTOM_SCRIPT = """
 """
 
 
-def get_html_from_filepath(filepath, template=None, start=0, end=None):
+def get_html_from_filepath(filepath, template=None, start=0, end=None, no_prompts=False):
     """Convert ipython notebook to html
     Return: html content of the converted notebook
     """
@@ -91,6 +91,13 @@ def get_html_from_filepath(filepath, template=None, start=0, end=None):
     exporter = HTMLExporter(config=config, template_file=template,
                             filters={'highlight2html': custom_highlighter},
                             preprocessors=[SubCell])
+
+    # Remove all the input and output prompts from the exported HTML, this extends the width of
+    # all cells,, not just the input and output cells. 
+    if no_prompts:
+        exporter.exclude_input_prompt = True
+        exporter.exclude_output_prompt = True
+
     content, info = exporter.from_filename(filepath)
 
     if BeautifulSoup:

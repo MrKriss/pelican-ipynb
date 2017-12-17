@@ -35,9 +35,13 @@ def notebook(preprocessor, tag, markup):
     # nb_dir =  preprocessor.configs.getConfig('NOTEBOOK_DIR')
     nb_path = os.path.join('content', src)
 
-    # Find template to use, if specified
-    template = preprocessor.configs.getConfig('IPYNB_TEMPLATE', None)
-    content, info = get_html_from_filepath(filepath, template=template, start=start, end=end)
+    # Optionally further customise template. 
+    template = preprocessor.configs.getConfig('IPYNB_TEMPLATE')
+    no_prompts = preprocessor.configs.getConfig('IPYNB_NO_PROMPTS')
+    
+    content, info = get_html_from_filepath(
+        filepath, template=template, start=start, end=end, no_prompts=no_prompts
+    )
     
     ignore_css = preprocessor.configs.getConfig('IPYNB_IGNORE_CSS', False)
     content = fix_css(content, info, ignore_css=ignore_css)

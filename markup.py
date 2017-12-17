@@ -80,7 +80,8 @@ class IPythonNB(BaseReader):
 
         # Find template to use, if specified
         template = self.settings.get('IPYNB_TEMPLATE')
-        content, info = get_html_from_filepath(filepath, template)
+        no_prompts = self.settings.get('IPYNB_NO_PROMPTS')
+        content, info = get_html_from_filepath(filepath, template, no_prompts=no_prompts)
 
         # Generate Summary: Do it before cleaning CSS
         if 'summary' not in [key.lower() for key in self.settings.keys()]:
